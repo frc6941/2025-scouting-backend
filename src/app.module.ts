@@ -5,7 +5,10 @@ import { ScoutingModule } from './scouting/scouting.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      // Set this to true in production.
+      ignoreEnvFile: true,
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
