@@ -2,12 +2,15 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScoutingModule } from './scouting/scouting.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       // Set this to true in production.
-      ignoreEnvFile: true,
+      ignoreEnvFile: false,
+      isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -25,6 +28,8 @@ import { ScoutingModule } from './scouting/scouting.module';
       inject: [ConfigService],
     }),
     ScoutingModule,
+    UserModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
