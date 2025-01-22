@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
-import { GetAccessTokenResposne } from './dto/access-token.dto';
+import { GetAccessTokenResponse } from './dto/access-token.dto';
 import { ConfigService } from '@nestjs/config';
 import { GetUserInfoResponse } from './dto/user-info.dto';
 
@@ -15,7 +15,7 @@ export class FeishuAuthService {
 
   getAccessToken(
     code: string,
-  ): Observable<AxiosResponse<GetAccessTokenResposne>> {
+  ): Observable<AxiosResponse<GetAccessTokenResponse>> {
     return this.httpService.post(
       'https://open.feishu.cn/open-apis/authen/v2/oauth/token',
       {
@@ -23,7 +23,7 @@ export class FeishuAuthService {
         client_id: this.configService.get<string>('FEISHU_CLIENT_ID'),
         client_secret: this.configService.get<string>('FEISHU_CLIENT_SECRET'),
         code: code,
-        redirect_uri: 'http://localhost:3000/auth/feishu/token',
+        redirect_uri: this.configService.get<string>('FEISHU_REDIRECT_URI'),
       },
     );
   }

@@ -1,4 +1,4 @@
-export class GetAccessTokenResposne {
+export class GetAccessTokenResponse {
   code: string;
   access_token: string;
   expires_in: number;

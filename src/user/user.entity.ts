@@ -1,5 +1,11 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+export enum Role {
+  USER = 'user',
+  ADMIN = 'admin',
+}
+
+@Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -12,4 +18,11 @@ export class User {
 
   @Column()
   avatar: string;
+
+  @Column({
+    type: 'enum',
+    enum: Role,
+    array: true,
+  })
+  roles: Role[];
 }
