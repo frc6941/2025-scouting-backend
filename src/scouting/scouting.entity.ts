@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../user/user.entity';
 
 export enum MatchType {
   QUAL = 'Qualification',
@@ -106,9 +107,6 @@ export class TeamMatchRecord {
   alliance: Alliance;
 
   @Column()
-  scouter: string;
-
-  @Column()
   team: number;
 
   @Column(() => Autonomous)
@@ -119,4 +117,7 @@ export class TeamMatchRecord {
 
   @Column(() => EndAndAfterGame)
   endAndAfterGame: EndAndAfterGame;
+
+  @ManyToOne(() => User, (user) => user.matchRecords)
+  user: User;
 }

@@ -5,12 +5,15 @@ import { AxiosResponse } from 'axios';
 import { GetAccessTokenResponse } from './dto/access-token.dto';
 import { ConfigService } from '@nestjs/config';
 import { GetUserInfoResponse } from './dto/user-info.dto';
+import { JwtPayload } from './auth.controller';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class FeishuAuthService {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
+    private readonly jwtService: JwtService,
   ) {}
 
   getAccessToken(
@@ -40,5 +43,11 @@ export class FeishuAuthService {
         },
       },
     );
+  }
+
+  async getPayload(token: string): Promise<JwtPayload> {
+    return await this.jwtService.verifyAsync(token, {
+      secret: this.configService.get('JWT_SECRET'),
+    });
   }
 }

@@ -3,7 +3,6 @@ import {
   IsDefined,
   IsEnum,
   IsInt,
-  IsNotEmpty,
   IsString,
   Min,
   ValidateNested,
@@ -91,10 +90,6 @@ export class CreateTeamRecordDto {
 
   @IsEnum(Alliance)
   alliance: Alliance;
-
-  @IsString()
-  @IsNotEmpty()
-  scouter: string;
 
   @IsInt()
   @Min(1)

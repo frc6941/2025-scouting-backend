@@ -1,7 +1,7 @@
 import {
   Controller,
   ForbiddenException,
-  Get,
+  Get, Logger,
   Query,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -14,6 +14,8 @@ import { UserService } from '../user/user.service';
 
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
+
   constructor(
     private feishuAuthService: FeishuAuthService,
     private jwtService: JwtService,
@@ -22,18 +24,20 @@ export class AuthController {
 
   @Get('feishu/authenticate')
   async authenticate(@Query('code') code: string) {
+    this.logger.log('1');
     const resAccessToken = await firstValueFrom(
       this.feishuAuthService.getAccessToken(code).pipe(
         catchError((error: AxiosError) => {
+          this.logger.error(error.response?.data);
           throw new ForbiddenException(error.response?.data);
         }),
       ),
     );
     const accessToken = resAccessToken.data.access_token;
-    console.log(`${accessToken}`);
     const resUserInfo = await firstValueFrom(
       this.feishuAuthService.getUserInfo(accessToken).pipe(
         catchError((error: AxiosError) => {
+          this.logger.error(error.response?.data);
           throw new UnauthorizedException(error.response?.data);
         }),
       ),
@@ -46,6 +50,7 @@ export class AuthController {
     }
     const roles = await this.userService.getUserRoleByFeishuId(openId);
     if (roles === undefined) {
+      this.logger.error(`User ${name} roles empty`);
       throw new UnauthorizedException('Roles empty');
     }
     const payload: JwtPayload = { sub: openId, name, avatarUrl, roles };

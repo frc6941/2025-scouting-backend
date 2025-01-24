@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { FeishuAuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from '../user/user.module';
-import { UserService } from '../user/user.service';
+import { AuthGuard } from './auth.guard';
 
 @Module({
   imports: [
@@ -23,7 +23,8 @@ import { UserService } from '../user/user.service';
     }),
     UserModule,
   ],
-  providers: [FeishuAuthService, UserService],
+  providers: [FeishuAuthService],
   controllers: [AuthController],
+  exports: [FeishuAuthService],
 })
 export class AuthModule {}

@@ -4,8 +4,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScoutingModule } from './scouting/scouting.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './auth/role.guard';
 
 @Module({
   imports: [
@@ -25,19 +23,12 @@ import { RolesGuard } from './auth/role.guard';
         database: configService.get('POSTGRES_DB'),
         autoLoadEntities: true,
         synchronize: true,
-        logging: true,
       }),
       inject: [ConfigService],
     }),
     ScoutingModule,
     UserModule,
     AuthModule,
-  ],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
   ],
 })
 export class AppModule {}

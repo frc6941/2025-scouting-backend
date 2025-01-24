@@ -23,6 +23,12 @@ export class UserService {
     return user?.roles;
   }
 
+  async getUserByFeishuId(feishuId: string): Promise<User | null> {
+    return await this.userRepository.findOneBy({
+      feishuId,
+    });
+  }
+
   async createUser(
     name: string,
     openId: string,
