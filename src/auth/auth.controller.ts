@@ -24,7 +24,9 @@ export class AuthController {
 
   @Get('feishu/authenticate')
   async authenticate(@Query('code') code: string) {
+    this.logger.log(code)
     this.logger.log('1');
+
     const resAccessToken = await firstValueFrom(
       this.feishuAuthService.getAccessToken(code).pipe(
         catchError((error: AxiosError) => {

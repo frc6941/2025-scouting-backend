@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { TeamMatchRecord } from '../scouting/scouting.entity';
+import { PitScouting } from 'src/pit-scouting/pit-scouting.entity';
 
 export enum Role {
   USER = 'user',
@@ -31,4 +32,7 @@ export class User {
 
   @OneToMany(() => TeamMatchRecord, (record) => record.user)
   matchRecords: TeamMatchRecord[];
+
+  @OneToMany(() => PitScouting, (pitScouting) => pitScouting.user)
+  pitScouting: PitScouting[];
 }

@@ -16,12 +16,13 @@ import { AuthGuard } from './auth.guard';
         return {
           global: true,
           secret: configService.get('JWT_SECRET'),
-          signOptions: { expiresIn: configService.get('JWT_EXPIRES') },
+          signOptions: { expiresIn: configService.get('JWT_EXPIRES', '1d') },
         };
       },
       inject: [ConfigService],
     }),
     UserModule,
+    ConfigModule,
   ],
   providers: [FeishuAuthService],
   controllers: [AuthController],
