@@ -21,7 +21,7 @@
   },
   "engines": {
     "node": ">=20"
-  }
+  },
   "dependencies": {
     "@nestjs/axios": "^4.0.0",
     "@nestjs/common": "^11.0.1",
