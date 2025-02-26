@@ -69,4 +69,23 @@ export class PitScoutingService {
       }
     };
   }
+
+  async deletePitScouting(teamNumber: number) {
+    const pitScouting = await this.pitScoutingRepository.findOne({
+      where: { team: { number: teamNumber } },
+      relations: ['team']
+    });
+
+    if (!pitScouting) {
+      throw new NotFoundException(`No pit scouting found for team ${teamNumber}`);
+    }
+
+    await this.pitScoutingRepository.remove(pitScouting);
+    return { message: `Pit scouting for team ${teamNumber} deleted successfully` };
+  }
+
+  async deleteAll() {
+    await this.pitScoutingRepository.clear();
+    return { message: 'All pit scouting records deleted successfully' };
+  }
 }

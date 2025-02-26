@@ -45,7 +45,7 @@ export class AlgaeCount {
 }
 
 export class Autonomous {
-  @Column(() => Number)
+  @Column('int', { name: 'autoStart' })
   autoStart: number;
 
   @Column(() => CoralCount)

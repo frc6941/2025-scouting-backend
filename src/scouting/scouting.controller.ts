@@ -9,6 +9,7 @@ import {
   Param,
   Query,
   ParseIntPipe,
+  Delete,
 } from '@nestjs/common';
 import { CreateTeamRecordDto } from './dto/create-team-match-record.dto';
 import { ScoutingService } from './scouting.service';
@@ -43,5 +44,28 @@ export class ScoutingController {
     @Query('type') matchType?: MatchType
   ) {
     return this.scoutingService.findTeamMatches(teamNumber, matchType);
+  }
+
+  @Get('teams')
+  async findAllMatches() {
+    console.log('findAllMatches');
+    return this.scoutingService.findAllMatches();
+  }
+
+  @Delete('match/:id')
+  @UseGuards(AuthGuard)
+  async deleteMatchRecord(@Param('id') id: string) {
+    return this.scoutingService.deleteMatchRecord(id);
+  }
+
+  @Delete('team/:teamNumber/matches')
+  @UseGuards(AuthGuard)
+  async deleteTeamMatches(@Param('teamNumber', ParseIntPipe) teamNumber: number) {
+    return this.scoutingService.deleteTeamMatches(teamNumber);
+  }
+
+  @Delete('delete/all')
+  async deleteAll() {
+    return this.scoutingService.deleteAll();
   }
 }

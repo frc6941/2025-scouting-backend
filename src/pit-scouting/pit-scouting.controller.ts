@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Request, Logger, Get, Param, ParseIntPipe, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request, Logger, Get, Param, ParseIntPipe, NotFoundException, Delete } from '@nestjs/common';
 import { PitScoutingService } from './pit-scouting.service';
 import { CreatePitScoutingDto } from './dto/create-pit-scouting.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -36,6 +36,17 @@ export class PitScoutingController {
     @Param('teamNumber', ParseIntPipe) teamNumber: number
   ) {
     return this.pitScoutingService.findByTeamNumber(teamNumber);
+  }
+
+  @Delete(':teamNumber')
+  @UseGuards(AuthGuard)
+  async deletePitScouting(@Param('teamNumber', ParseIntPipe) teamNumber: number) {
+    return this.pitScoutingService.deletePitScouting(teamNumber);
+  }
+
+  @Delete('delete/all')
+  async deleteAll() {
+    return this.pitScoutingService.deleteAll();
   }
 }
 

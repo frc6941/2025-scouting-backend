@@ -7,6 +7,7 @@ import { instanceToPlain, plainToClass } from 'class-transformer';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.entity';
 import { TeamService } from '../team/team.service';
+import { all } from 'axios';
 
 @Injectable()
 export class ScoutingService {
@@ -40,6 +41,7 @@ export class ScoutingService {
     }
 
     const team = await this.teamService.findOrCreate(createDto.team);
+    console.log(createDto.autonomous);
 
     const matchRecord = this.teamMatchRecordRepository.create({
       matchType: createDto.matchType,
@@ -52,6 +54,7 @@ export class ScoutingService {
       team: team
     });
     let response = await this.teamMatchRecordRepository.save(matchRecord)
+    console.log(response);
     return response;
   }
 
@@ -94,4 +97,60 @@ export class ScoutingService {
       }
     }));
   }
+
+  async findAllMatches() {
+    const allMatches = await this.teamMatchRecordRepository.find({
+      relations: ['team', 'user'],
+    });
+    
+    return allMatches.map(match => ({
+      id: match.id,
+      matchType: match.matchType,
+      matchNumber: match.matchNumber,
+      alliance: match.alliance,
+      autonomous: match.autonomous,
+      teleop: match.teleop,
+      endAndAfterGame: match.endAndAfterGame,
+      team: match.team.number,
+      scoutedBy: {
+        name: match.user.name,
+        avatar: match.user.avatar
+      }
+    }));
+  }
+
+  async deleteMatchRecord(id: string) {
+    const record = await this.teamMatchRecordRepository.findOne({
+      where: { id },
+      relations: ['team']
+    });
+
+    if (!record) {
+      throw new NotFoundException(`Match record with ID ${id} not found`);
+    }
+
+    await this.teamMatchRecordRepository.remove(record);
+    return { message: 'Match record deleted successfully' };
+  }
+
+  async deleteTeamMatches(teamNumber: number) {
+    const records = await this.teamMatchRecordRepository.find({
+      where: { team: { number: teamNumber } },
+      relations: ['team']
+    });
+
+    if (records.length === 0) {
+      throw new NotFoundException(`No match records found for team ${teamNumber}`);
+    }
+
+    await this.teamMatchRecordRepository.remove(records);
+    return { message: `All match records for team ${teamNumber} deleted successfully` };
+  }
+
+  async deleteAll() {
+    await this.teamMatchRecordRepository.clear();
+    return { message: 'All match records deleted successfully' };
+  }
 }
+
+
