@@ -1,11 +1,13 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../user/user.entity';
+import { PitScouting } from 'src/pit-scouting/pit-scouting.entity';
+import { Team } from '../team/team.entity';
 
 export enum MatchType {
   QUAL = 'Qualification',
   PRAC = 'Practice',
   MATCH = 'Match',
-  FIANL = 'Final',
+  FINAL = 'Final',
 }
 
 export enum Alliance {
@@ -13,9 +15,6 @@ export enum Alliance {
   BLUE = 'Blue',
 }
 
-export enum AutoStart {
-  A = 'A',
-}
 
 export class CoralCount {
   @Column()
@@ -46,11 +45,8 @@ export class AlgaeCount {
 }
 
 export class Autonomous {
-  @Column({
-    type: 'enum',
-    enum: AutoStart,
-  })
-  autoStart: AutoStart;
+  @Column('int', { name: 'autoStart' })
+  autoStart: number;
 
   @Column(() => CoralCount)
   coralCount: CoralCount;
@@ -106,9 +102,6 @@ export class TeamMatchRecord {
   })
   alliance: Alliance;
 
-  @Column()
-  team: number;
-
   @Column(() => Autonomous)
   autonomous: Autonomous;
 
@@ -117,6 +110,9 @@ export class TeamMatchRecord {
 
   @Column(() => EndAndAfterGame)
   endAndAfterGame: EndAndAfterGame;
+
+  @ManyToOne(() => Team, (team) => team.matchRecords)
+  team: Team;
 
   @ManyToOne(() => User, (user) => user.matchRecords)
   user: User;

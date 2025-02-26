@@ -1,9 +1,10 @@
-import { Alliance, AutoStart, MatchType, StopStatus } from '../scouting.entity';
+import { Alliance, MatchType, StopStatus } from '../scouting.entity';
 import {
   IsDefined,
   IsEnum,
   IsInt,
   IsString,
+  Max,
   Min,
   ValidateNested,
 } from 'class-validator';
@@ -46,8 +47,10 @@ export class AlgaeCount {
 }
 
 export class Autonomous {
-  @IsEnum(AutoStart)
-  autoStart: AutoStart;
+  @IsInt()
+  @Min(0)
+  @Max(6)
+  autoStart: number;
 
   @ValidateNested()
   @IsDefined()

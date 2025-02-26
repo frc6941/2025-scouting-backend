@@ -4,6 +4,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScoutingModule } from './scouting/scouting.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import crypto from "crypto";
+import { PitScoutingModule } from './pit-scouting/pit-scouting.module';
+
 
 @Module({
   imports: [
@@ -29,6 +32,9 @@ import { AuthModule } from './auth/auth.module';
     ScoutingModule,
     UserModule,
     AuthModule,
+    PitScoutingModule,
   ],
 })
 export class AppModule {}
+const configService = new ConfigService()
+console.log("Database password type:", typeof configService.get('POSTGRES_DB'),)

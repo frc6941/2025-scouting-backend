@@ -5,7 +5,6 @@ import { AuthController } from './auth.controller';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from '../user/user.module';
-import { AuthGuard } from './auth.guard';
 
 @Module({
   imports: [
@@ -16,12 +15,13 @@ import { AuthGuard } from './auth.guard';
         return {
           global: true,
           secret: configService.get('JWT_SECRET'),
-          signOptions: { expiresIn: configService.get('JWT_EXPIRES') },
+          signOptions: { expiresIn: configService.get('JWT_EXPIRES', '1d') },
         };
       },
       inject: [ConfigService],
     }),
     UserModule,
+    ConfigModule,
   ],
   providers: [FeishuAuthService],
   controllers: [AuthController],
