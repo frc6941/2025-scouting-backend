@@ -61,6 +61,7 @@ export class PitScoutingService {
       capabilities: pitScouting.capabilities,
       chassisType: pitScouting.chassisType,
       cycleTime: pitScouting.cycleTime,
+      comments: pitScouting.comments,
       photos: pitScouting.photos,
       teamNumber: pitScouting.team.number,
       scoutedBy: {

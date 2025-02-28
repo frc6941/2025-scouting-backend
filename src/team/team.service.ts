@@ -2,12 +2,18 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Team } from './team.entity';
+import { PitScouting } from '../pit-scouting/pit-scouting.entity';
+import { TeamMatchRecord } from '../scouting/scouting.entity';
 
 @Injectable()
 export class TeamService {
   constructor(
     @InjectRepository(Team)
     private teamRepository: Repository<Team>,
+    @InjectRepository(PitScouting)
+    private pitScoutingRepository: Repository<PitScouting>,
+    @InjectRepository(TeamMatchRecord)
+    private matchRecordRepository: Repository<TeamMatchRecord>
   ) {}
 
   async findOrCreate(teamNumber: number): Promise<Team> {
@@ -25,7 +31,9 @@ export class TeamService {
   }
 
   async findAll() {
-    return await this.teamRepository.find();
+    return await this.teamRepository.find({
+      relations: ['pitScouting', 'matchRecords', 'pitScouting.user']
+    });
   }
 
   async deleteTeam(teamNumber: number) {
@@ -52,7 +60,22 @@ export class TeamService {
   }
 
   async deleteAll() {
+    // First delete all pit scouting records
+    await this.pitScoutingRepository.clear();
+    
+    // Then delete all match records
+    await this.matchRecordRepository.clear();
+    
+    // Finally delete all teams
     await this.teamRepository.clear();
-    return { message: 'All teams deleted successfully' };
+    
+    return { 
+      message: 'All teams and associated records deleted successfully',
+      details: {
+        teams: 'deleted',
+        pitScouting: 'deleted',
+        matchRecords: 'deleted'
+      }
+    };
   }
 } 

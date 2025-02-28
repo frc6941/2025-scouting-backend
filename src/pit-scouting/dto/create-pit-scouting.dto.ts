@@ -1,15 +1,32 @@
-import { IsString, IsNumber, IsArray, IsObject, IsBoolean, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsString, IsNumber, IsArray, IsObject, IsBoolean, IsOptional } from 'class-validator';
 
 class Capabilities {
   @IsBoolean()
-  amp: boolean;
+  coralL1: boolean;
 
   @IsBoolean()
-  speaker: boolean;
+  coralL2: boolean;
 
   @IsBoolean()
-  trap: boolean;
+  coralL3: boolean;
+
+  @IsBoolean()
+  coralL4: boolean;
+
+  @IsBoolean()
+  algaeProcessor: boolean;
+
+  @IsBoolean()
+  algaeBarge: boolean;
+
+  @IsBoolean()
+  climbNone: boolean;
+
+  @IsBoolean()
+  climbShallow: boolean;
+
+  @IsBoolean()
+  climbDeep: boolean;
 }
 
 export class CreatePitScoutingDto {
@@ -17,8 +34,6 @@ export class CreatePitScoutingDto {
   autoType: string;
 
   @IsObject()
-  @ValidateNested()
-  @Type(() => Capabilities)
   capabilities: Capabilities;
 
   @IsString()
@@ -33,4 +48,8 @@ export class CreatePitScoutingDto {
 
   @IsNumber()
   teamNumber: string;
+
+  @IsString()
+  @IsOptional()
+  comments?: string;
 } 
