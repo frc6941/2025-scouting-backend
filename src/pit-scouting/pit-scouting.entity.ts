@@ -12,9 +12,15 @@ export class PitScouting {
 
   @Column('json')
   capabilities: {
-    amp: boolean;
-    speaker: boolean;
-    trap: boolean;
+    coralL1: boolean;
+    coralL2: boolean;
+    coralL3: boolean;
+    coralL4: boolean;
+    algaeProcessor: boolean;
+    algaeBarge: boolean;
+    climbNone: boolean;
+    climbShallow: boolean;
+    climbDeep: boolean;
   };
 
   @Column()
@@ -25,6 +31,9 @@ export class PitScouting {
 
   @Column('simple-array')
   photos: string[];
+
+  @Column({ nullable: true, type: 'text' })
+  comments?: string;
 
   @ManyToOne(() => User, (user) => user.pitScouting)
   user: User;
