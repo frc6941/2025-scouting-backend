@@ -60,22 +60,6 @@ export class TeamService {
   }
 
   async deleteAll() {
-    // First delete all pit scouting records
-    await this.pitScoutingRepository.clear();
-    
-    // Then delete all match records
-    await this.matchRecordRepository.clear();
-    
-    // Finally delete all teams
     await this.teamRepository.clear();
-    
-    return { 
-      message: 'All teams and associated records deleted successfully',
-      details: {
-        teams: 'deleted',
-        pitScouting: 'deleted',
-        matchRecords: 'deleted'
-      }
-    };
   }
 } 

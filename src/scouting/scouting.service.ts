@@ -151,6 +151,61 @@ export class ScoutingService {
     await this.teamMatchRecordRepository.clear();
     return { message: 'All match records deleted successfully' };
   }
+
+  async update(id: string, updateDto: any, userId: string) {
+    // Find the existing record
+    const existingRecord = await this.teamMatchRecordRepository.findOne({
+      where: { id },
+      relations: ['team', 'user']
+    });
+
+    if (!existingRecord) {
+      throw new NotFoundException(`Match record with ID ${id} not found`);
+    }
+
+    // Get the user
+    const user = await this.userService.getUserByFeishuId(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Get the team (in case it changed)
+    let teamNumber = updateDto.team;
+    const team = await this.teamService.findOrCreate(teamNumber);
+
+    // Create a properly formatted DTO from the incoming data
+    const formattedData = {
+      matchType: existingRecord.matchType, // Keep existing match type if not provided
+      matchNumber: existingRecord.matchNumber, // Keep existing match number if not provided
+      alliance: updateDto.alliance,
+      autonomous: updateDto.autonomous,
+      teleop: updateDto.teleop,
+      endAndAfterGame: updateDto.endAndAfterGame,
+      team: team,
+      user: user
+    };
+
+    // Update the record
+    Object.assign(existingRecord, formattedData);
+
+    // Save and return the updated record
+    const updated = await this.teamMatchRecordRepository.save(existingRecord);
+    
+    return {
+      id: updated.id,
+      matchType: updated.matchType,
+      matchNumber: updated.matchNumber,
+      alliance: updated.alliance,
+      team: updated.team.number,
+      autonomous: updated.autonomous,
+      teleop: updated.teleop,
+      endAndAfterGame: updated.endAndAfterGame,
+      scoutedBy: {
+        name: updated.user.name,
+        avatar: updated.user.avatar
+      }
+    };
+  }
 }
 
 
