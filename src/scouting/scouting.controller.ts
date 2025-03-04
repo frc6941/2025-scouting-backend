@@ -70,17 +70,6 @@ export class ScoutingController {
     return this.scoutingService.deleteAll();
   }
 
-  @Put(':id')
-  @UseGuards(AuthGuard)
-  async updateMatchRecord(
-    @Param('id') id: string,
-    @Body() updateTeamRecordDto: CreateTeamRecordDto,
-    @Request() req: AuthenticatedRequest,
-  ) {
-    const userId = req.user!.sub;
-    return this.scoutingService.update(id, updateTeamRecordDto, userId);
-  }
-
   @Put('update/:id')
   @UseGuards(AuthGuard)
   async updateMatchRecordAlternate(

@@ -175,8 +175,8 @@ export class ScoutingService {
 
     // Create a properly formatted DTO from the incoming data
     const formattedData = {
-      matchType: existingRecord.matchType, // Keep existing match type if not provided
-      matchNumber: existingRecord.matchNumber, // Keep existing match number if not provided
+      matchType: updateDto.matchType, // Keep existing match type if not provided
+      matchNumber: updateDto.matchNumber, // Keep existing match number if not provided
       alliance: updateDto.alliance,
       autonomous: updateDto.autonomous,
       teleop: updateDto.teleop,

@@ -68,7 +68,8 @@ export enum StopStatus {
   PARK = 'Park',
   DEEP = 'Deep Climb',
   SHALLOW = 'Shallow Climb',
-  NONE = 'None',
+  PLAYED_DEFENSE = 'Played Defense',
+  FAILED = 'Failed',
 }
 
 export class EndAndAfterGame {
