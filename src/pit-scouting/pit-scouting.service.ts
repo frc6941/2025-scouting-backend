@@ -89,4 +89,6 @@ export class PitScoutingService {
     await this.pitScoutingRepository.clear();
     return { message: 'All pit scouting records deleted successfully' };
   }
+
+  
 }

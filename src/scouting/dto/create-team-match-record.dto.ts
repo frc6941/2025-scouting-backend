@@ -7,6 +7,7 @@ import {
   Max,
   Min,
   ValidateNested,
+  IsBoolean,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -51,6 +52,9 @@ export class Autonomous {
   @Min(0)
   @Max(6)
   autoStart: number;
+  
+  @IsBoolean()
+  leftStartingZone: boolean;
 
   @ValidateNested()
   @IsDefined()
@@ -81,6 +85,23 @@ export class EndAndAfterGame {
 
   @IsString()
   comments: string;
+  
+  @IsInt()
+  @Min(0)
+  climbingTime: number;
+  
+  @IsInt()
+  @Min(0)
+  rankingPoint: number;
+  
+  @IsBoolean()
+  coopPoint: boolean;
+  
+  @IsBoolean()
+  autonomousMove: boolean;
+  
+  @IsBoolean()
+  teleopMove: boolean;
 }
 
 export class CreateTeamRecordDto {

@@ -1,6 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../user/user.entity';
-import { PitScouting } from 'src/pit-scouting/pit-scouting.entity';
 import { Team } from '../team/team.entity';
 
 export enum MatchType {
@@ -14,7 +13,6 @@ export enum Alliance {
   RED = 'Red',
   BLUE = 'Blue',
 }
-
 
 export class CoralCount {
   @Column()
@@ -48,6 +46,9 @@ export class Autonomous {
   @Column('int', { name: 'autoStart' })
   autoStart: number;
 
+  @Column()
+  leftStartingZone: boolean;
+
   @Column(() => CoralCount)
   coralCount: CoralCount;
 
@@ -67,8 +68,7 @@ export enum StopStatus {
   PARK = 'Park',
   DEEP = 'Deep Climb',
   SHALLOW = 'Shallow Climb',
-  FAILED = 'Failed',
-  PLAYED_DEFENSE = 'Played Defense',
+  NONE = 'None',
 }
 
 export class EndAndAfterGame {
@@ -80,6 +80,21 @@ export class EndAndAfterGame {
 
   @Column()
   comments: string;
+  
+  @Column()
+  climbingTime: number;
+  
+  @Column()
+  rankingPoint: number;
+  
+  @Column()
+  coopPoint: boolean;
+  
+  @Column()
+  autonomousMove: boolean;
+  
+  @Column()
+  teleopMove: boolean;
 }
 
 @Entity()
