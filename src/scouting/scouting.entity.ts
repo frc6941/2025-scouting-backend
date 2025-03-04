@@ -46,7 +46,7 @@ export class Autonomous {
   @Column('int', { name: 'autoStart' })
   autoStart: number;
 
-  @Column()
+  @Column({nullable: true})
   leftStartingZone: boolean;
 
   @Column(() => CoralCount)
@@ -68,7 +68,8 @@ export enum StopStatus {
   PARK = 'Park',
   DEEP = 'Deep Climb',
   SHALLOW = 'Shallow Climb',
-  NONE = 'None',
+  PLAYED_DEFENSE = 'Played Defense',
+  FAILED = 'Failed',
 }
 
 export class EndAndAfterGame {
@@ -78,22 +79,22 @@ export class EndAndAfterGame {
   })
   stopStatus: StopStatus;
 
-  @Column()
+  @Column({nullable: true})
   comments: string;
   
-  @Column()
+  @Column({nullable: true})
   climbingTime: number;
   
-  @Column()
+  @Column({nullable: true})
   rankingPoint: number;
   
-  @Column()
+  @Column({nullable: true})
   coopPoint: boolean;
   
-  @Column()
+  @Column({nullable: true})
   autonomousMove: boolean;
   
-  @Column()
+  @Column({nullable: true})
   teleopMove: boolean;
 }
 
