@@ -25,7 +25,7 @@ export class FeishuAuthService {
     console.log(this.configService.get<string>('FEISHU_CLIENT_SECRET'))
     console.log(this.configService.get<string>('FEISHU_REDIRECT_URI'))
     console.log(code)
-    console.log(configService.get('JWT_SECRET'))
+    console.log(this.configService.get('JWT_SECRET'))
 
     return this.httpService.post(
       'https://open.feishu.cn/open-apis/authen/v2/oauth/token',
