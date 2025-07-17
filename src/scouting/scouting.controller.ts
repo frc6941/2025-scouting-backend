@@ -83,7 +83,7 @@ export class ScoutingController {
 
   @Delete('delete/:id')
   @UseGuards(AuthGuard)
-  async updateMatchRecordAlternate(
+  async deleteMatchRecordAlternate(
     @Param('id') id: string,
     @Request() req: AuthenticatedRequest,
   ) {
