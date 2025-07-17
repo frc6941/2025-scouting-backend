@@ -85,10 +85,8 @@ export class ScoutingController {
   @UseGuards(AuthGuard)
   async updateMatchRecordAlternate(
     @Param('id') id: string,
-    @Body() deleteTeamRecordDto: any,
     @Request() req: AuthenticatedRequest,
   ) {
-    const userId = req.user!.sub;
-    return this.scoutingService.delete(id, deleteTeamRecordDto, userId);
+    return this.scoutingService.deleteMatchRecord(id);
   }
 }
