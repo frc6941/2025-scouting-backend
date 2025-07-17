@@ -19,10 +19,13 @@ export class FeishuAuthService {
   getAccessToken(
     code: string,
   ): Observable<AxiosResponse<GetAccessTokenResponse>> {
+    let something = this.configService.get<string>('FEISHU_CLIENT_ID');
+    console.log(something);
     console.log(this.configService.get<string>('FEISHU_CLIENT_ID'))
     console.log(this.configService.get<string>('FEISHU_CLIENT_SECRET'))
     console.log(this.configService.get<string>('FEISHU_REDIRECT_URI'))
     console.log(code)
+    console.log(this.configService.get('JWT_SECRET'))
 
     return this.httpService.post(
       'https://open.feishu.cn/open-apis/authen/v2/oauth/token',

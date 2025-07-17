@@ -80,4 +80,13 @@ export class ScoutingController {
     const userId = req.user!.sub;
     return this.scoutingService.update(id, updateTeamRecordDto, userId);
   }
+
+  @Delete('delete/:id')
+  @UseGuards(AuthGuard)
+  async deleteMatchRecordAlternate(
+    @Param('id') id: string,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    return this.scoutingService.deleteMatchRecord(id);
+  }
 }
